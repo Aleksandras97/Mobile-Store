@@ -10882,3 +10882,24 @@ a.text-dark:focus {
   }
 }
 
+body {
+  background-color: #111;
+  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+}
+
+.custom-nav {
+  background-color: #111;
+  display: inline-block;
+  width: 100%;
+}
+
+.border-gradient {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 1px;
+}
+
+.border-gradient-purple {
+  border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+}
+
