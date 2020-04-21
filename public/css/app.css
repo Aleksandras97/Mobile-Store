@@ -1,11 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;
 
-/*!
- * Bootstrap v4.4.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 The Bootstrap Authors
- * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+800&display=swap);@charset "UTF-8";
 
 :root {
   --blue: #3490dc;
@@ -10883,8 +10878,22 @@ a.text-dark:focus {
 }
 
 body {
-  background-color: #111;
-  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  font-family: "Baloo Paaji 2", cursive;
+  background-color: white;
+  background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+}
+
+.title {
+  text-align: center;
+  font-size: 3rem;
+  padding-top: 20px;
+  font-weight: bold;
+}
+
+.background {
+  background-color: #deeaee;
+  margin-top: 50px;
+  padding: 10px;
 }
 
 .custom-nav {
@@ -10893,7 +10902,7 @@ body {
   width: 100%;
 }
 
-.border-gradient {
+.border-gradient-nav {
   border: 10px solid;
   border-image-slice: 1;
   border-width: 1px;
@@ -10901,5 +10910,36 @@ body {
 
 .border-gradient-purple {
   border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+}
+
+.border-gradient {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 3px;
+}
+
+.border-gradient-card {
+  border-image-source: linear-gradient(#0e2431, white);
+}
+
+.add-button {
+  position: absolute;
+  bottom: 28rem;
+  right: 2rem;
+}
+
+.card-img img {
+  max-width: 100%;
+  vertical-align: top;
+  display: inline-block;
+  padding: 30px;
+}
+
+.pricing-cards {
+  padding: 3% 2%;
+}
+
+.color-phone {
+  background-color: #0e2431;
 }
 
