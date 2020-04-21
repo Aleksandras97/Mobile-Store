@@ -1,0 +1,67 @@
+body {
+  font-family: 'Baloo Paaji 2', cursive;
+  background-color: white;
+  background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
+}
+
+.title{
+  text-align: center;
+  font-size: 3rem;
+  padding-top: 20px;
+  font-weight: bold;
+}
+
+.background {
+  background-color: #deeaee;
+  margin-top: 50px;
+  padding: 10px;
+}
+
+//Navbar
+.custom-nav {
+  background-color: #111;
+  display: inline-block;
+  width: 100%;
+}
+
+.border-gradient-nav {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 1px;
+}
+
+.border-gradient-purple {
+  border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+}
+
+//Phone user home page
+.border-gradient {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 3px;
+}
+
+.border-gradient-card {
+  border-image-source: linear-gradient(#0e2431, white);
+}
+
+.add-button {
+  position: absolute;
+  bottom: 28rem;
+  right: 2rem;
+}
+
+.card-img img {
+  max-width: 100%;
+  vertical-align: top;
+  display:inline-block;
+  padding: 30px;
+}
+
+.pricing-cards{
+  padding: 3% 2%;
+}
+
+.color-phone{
+  background-color: #0e2431;
+}
