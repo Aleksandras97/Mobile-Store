@@ -4,13 +4,15 @@
 
 <div class="container background">
   <h1>{{ $phone->brand }} <b>{{ $phone->model }}</b></h1>
-  <a href="/home"><button type="button" name="button" class="btn btn-success m-2">Go back</button></a>
-  <a href="/phones/{{ $phone->id }}/edit"><button type="button" name="button" class="btn btn-info m-2">Edit</button></a>
-  <form class="m-2" action="/phones/{{ $phone->id }}" method="post">
-    @csrf
-    @method('DELETE')
-    <button type="submit" name="button" class="btn btn-danger">Delete</button>
-  </form>
+  <a href="/"><button type="button" name="button" class="btn btn-success m-2">Go back</button></a>
+  @if(Auth::check())
+    <a href="/phones/{{ $phone->id }}/edit"><button type="button" name="button" class="btn btn-info m-2">Edit</button></a>
+    <form class="m-2" action="/phones/{{ $phone->id }}" method="post">
+      @csrf
+      @method('DELETE')
+      <button type="submit" name="button" class="btn btn-danger">Delete</button>
+    </form>
+  @endif
   <div class="row">
     <div class="col-md-5">
       <table class="table table-sm table-striped table-hover">

@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class PhonesController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +26,9 @@ class PhonesController extends Controller
      */
     public function index()
     {
-        $phones = Phone::get();
+        $phones = Phone::orderBy('created_at', 'desc')->get();
 
-        return view('home')->with('phones', $phones);
+        return view('index')->with('phones', $phones);
     }
 
     /**
