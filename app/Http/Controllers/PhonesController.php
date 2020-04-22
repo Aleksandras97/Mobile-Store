@@ -136,6 +136,6 @@ class PhonesController extends Controller
 
         $phone->delete();
 
-        return ['response' => 'Phone deleted', 'success' => true];
+        return redirect()->to('/home')->with('danger', "Phone deleted successfully");
     }
 }
