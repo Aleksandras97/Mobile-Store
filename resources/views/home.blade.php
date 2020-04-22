@@ -2,13 +2,13 @@
 
 @section('content')
 
-  <h2 class="title">Your Phones</h2>
+
     @if (session('status'))
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
         </div>
     @endif
-
+    <h2 class="title">Your Phones</h2>
     @if (count($phones))
     <a href="/phones/create" class="btn btn-warning add-button"><i class="fas fa-plus"></i> Add Phone</a>
     <div class="container">
@@ -31,5 +31,7 @@
     @else
       <p class="title" style="text-decoration: underline;" >You dont have any phones yet 📱</p>
     @endif
+
+
 
 @endsection

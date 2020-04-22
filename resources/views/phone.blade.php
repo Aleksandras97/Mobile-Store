@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container background">
-  <h1>{{ $phone->brand}} <b>{{ $phone->model}}</b></h1>
+  <h1>{{ $phone->brand }} <b>{{ $phone->model }}</b></h1>
   <a href="/home"><button type="button" name="button" class="btn btn-success m-2">Go back</button></a>
   <a href="/phones/{{ $phone->id }}/edit"><button type="button" name="button" class="btn btn-info m-2">Edit</button></a>
   <div class="row">

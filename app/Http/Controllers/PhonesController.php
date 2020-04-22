@@ -86,7 +86,8 @@ class PhonesController extends Controller
      */
     public function edit($id)
     {
-        return view('editPhone');
+        $phone = Phone::find($id);
+        return view('editPhone')->with("phone", $phone);
     }
 
     /**
@@ -98,35 +99,29 @@ class PhonesController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $validator = Validator::make($request->all(), [
+      $this->validate($request, [
           'brand' => 'required',
           'model' => 'required',
-          'screen_size' => 'required',
-          'RAMsize' => 'required',
-          'storage_size' => 'required',
+          'screenSize' => 'required',
+          'ramSize' => 'required',
+          'storageSize' => 'required',
           'color' => 'required',
-          'price' => 'required',
+          'price' => 'required|numeric',
 
       ]);
 
-      if ($validator->fails()) {
-        return ['response' => $validator->messages(), 'success' => false];
-          // return redirect('post/create')
-          //             ->withErrors($validator)
-          //             ->withInput();
-      }
+      $phone = Phone::find($id);
 
-      $phone =  Phone::find($id);
       $phone->brand = $request->input('brand');
       $phone->model = $request->input('model');
-      $phone->screen_size = $request->input('screen_size');
-      $phone->RAMsize = $request->input('RAMsize');
-      $phone->storage_size = $request->input('storage_size');
+      $phone->screen_size = $request->input('screenSize');
+      $phone->RAMsize = $request->input('ramSize');
+      $phone->storage_size = $request->input('storageSize');
       $phone->color = $request->input('color');
       $phone->price = $request->input('price');
       $phone->save();
 
-      return response()->json($phone);
+      return redirect()->to('/home')->with('success', "Phone edited successfully");
     }
 
     /**
