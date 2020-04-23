@@ -9,22 +9,25 @@
         </div>
     @endif
     <h2 class="title">Your Phones</h2>
-    @if (count($phones))
     <a href="/phones/create" class="btn btn-warning add-button"><i class="fas fa-plus"></i> Add Phone</a>
+    @if (count($phones))
     <div class="container">
       <div class="row">
-        @foreach ($phones as $phone)
-          <div class="pricing-cards col-md-3">
-            <div class="card-img card border-gradient border-gradient-card">
-              <img src="https://fdn2.gsmarena.com/vv/bigpic/alcatel-3x-2019.jpg" alt="sample85" />
-              <div class="color-phone card-body text-light">
-                <h4>{{ $phone->model}}</h4>
-                <h3>{{ $phone->brand}}</h3>
-                <p>€ {{ $phone->price}}</p>
-                <a href="/phones/{{ $phone->id }}"><button class="btn btn-lg btn-block bg-primary" type="button">Preview</button></a>
+          @foreach ($phones as $phone)
+            <div class="col-md-4 p-5 text-center">
+              <div class="card mb-2 border-gradient border-gradient-purple">
+                <img class="card-img-top"
+                src="/storage/phones/{{ $phone->cover_image }}"
+                alt="{{ $phone->cover_image }}"
+                />
+                <div class="card-body">
+                  <h4 class="card-title">{{ $phone->model}}</h4>
+                  <h3 class="card-text">{{ $phone->brand}}</h3>
+                  <p class="card-text">€ {{ $phone->price}}</p>
+                  <a href="/phones/{{ $phone->id }}"><button class="btn btn-primary btn-sm btn-rounded" >Preview</button></a>
+                </div>
               </div>
             </div>
-          </div>
           @endforeach
         </div>
       </div>

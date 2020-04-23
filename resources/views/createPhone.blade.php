@@ -6,7 +6,7 @@
     <h1>Add New Phone</h1>
     <div class="row">
       <div class="col-md-5">
-        <form method="post" action="/phones">
+        <form method="post" action="/phones" enctype="multipart/form-data">
           @csrf
           <div class="form-group">
             <label for="brand">Brand</label>
@@ -35,6 +35,10 @@
           <div class="form-group">
             <label for="price">Price</label>
             <input type="integer" class="form-control" name="price" id="price" placeholder="Ender Price">
+          </div>
+          <div class="form-group">
+            <label for="cover-image">Cover Image</label>
+            <input type="file" class="form-control" name="cover-image" id="cover-image">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>

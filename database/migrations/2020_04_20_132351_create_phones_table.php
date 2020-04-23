@@ -22,6 +22,7 @@ class CreatePhonesTable extends Migration
             $table->string('storage_size');
             $table->string('color');
             $table->double('price');
+            $table->string('cover_image');
             $table->string('user_id')->nullable();
             $table->timestamps();
         });

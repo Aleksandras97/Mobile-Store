@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PhonesController@index');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::resource('phones', 'PhonesController');
+
+Route::get('/photos/create/{phoneId}', 'PhotosController@create')->name('photo-create');
+
+Route::post('/photos/store', 'PhotosController@store')->name('photo-store');
+
+Route::delete('/photos/{id}', 'PhotosController@destroy');
 
 Route::get('/home', 'HomeController@index')->name('home');

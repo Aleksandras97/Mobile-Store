@@ -10908,18 +10908,18 @@ body {
   border-width: 1px;
 }
 
+.border-gradient {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+}
+
 .border-gradient-purple {
   border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
 }
 
-.border-gradient {
-  border: 10px solid;
-  border-image-slice: 1;
-  border-width: 3px;
-}
-
 .border-gradient-card {
-  border-image-source: linear-gradient(#0e2431, white);
+  border-image-source: linear-gradient(white, #0e2431);
 }
 
 .add-button {
@@ -10941,5 +10941,15 @@ body {
 
 .color-phone {
   background-color: #0e2431;
+}
+
+.detail-table th {
+  text-align: center;
+}
+
+.peopleCarouselImg img {
+  width: auto;
+  height: 225px;
+  max-height: 225px;
 }
 

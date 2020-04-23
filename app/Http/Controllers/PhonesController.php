@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Phone;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PhonesController extends Controller
 {
@@ -57,9 +58,18 @@ class PhonesController extends Controller
           'storageSize' => 'required',
           'color' => 'required',
           'price' => 'required|numeric',
+          'cover-image' => 'required|image'
 
       ]);
+      //Gets image name with extension
+      $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
+      $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+      $extension = $request->file('cover-image')->getClientOriginalExtension();
+      $filenameToStore = $filename . '_' . time() . '.' . $extension;
 
+      //Saves image
+      $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
+      //dd($path);
       $phone = new Phone();
 
       $phone->brand = $request->input('brand');
@@ -69,6 +79,7 @@ class PhonesController extends Controller
       $phone->storage_size = $request->input('storageSize');
       $phone->color = $request->input('color');
       $phone->price = $request->input('price');
+      $phone->cover_image = $filenameToStore;
       $phone->user_id = Auth::id();
       $phone->save();
 
@@ -83,7 +94,8 @@ class PhonesController extends Controller
      */
     public function show($id)
     {
-        $phone = Phone::find($id);
+        $phone = Phone::with('photos')->find($id);
+
 
         return view('phone')->with('phone', $phone);
     }
@@ -117,8 +129,22 @@ class PhonesController extends Controller
           'storageSize' => 'required',
           'color' => 'required',
           'price' => 'required|numeric',
+          'cover-image' => 'required|image'
 
       ]);
+
+      //Gets image name with extension
+      $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
+      $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+      $extension = $request->file('cover-image')->getClientOriginalExtension();
+      $filenameToStore = $filename . '_' . time() . '.' . $extension;
+
+      //Saves image
+      $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
+
+      //Deleting old image from storage
+      $oldCoverImage = $request->input('brand');
+      Storage::delete('cover-image-old');
 
       $phone = Phone::find($id);
 
@@ -129,6 +155,7 @@ class PhonesController extends Controller
       $phone->storage_size = $request->input('storageSize');
       $phone->color = $request->input('color');
       $phone->price = $request->input('price');
+      $phone->cover_image = $filenameToStore;
       $phone->save();
 
       return redirect()->to('/home')->with('success', "Phone edited successfully");
