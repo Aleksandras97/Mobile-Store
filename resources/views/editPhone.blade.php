@@ -37,11 +37,6 @@
             <label for="price">Price</label>
             <input type="integer" class="form-control" name="price" id="price" placeholder="Ender Price" value="{{ $phone->price }}">
           </div>
-          <div class="form-group">
-            <label for="cover-image">Cover Image</label>
-            <input type="file" class="form-control" name="cover-image" id="cover-image">
-            <input type="hidden" class="form-control" name="cover-image-old" id="cover-image-old" value="{{ $phone->cover_image }}"/>
-          </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>

@@ -23,6 +23,6 @@ Route::get('/photos/create/{phoneId}', 'PhotosController@create')->name('photo-c
 
 Route::post('/photos/store', 'PhotosController@store')->name('photo-store');
 
-Route::delete('/photos/{id}', 'PhotosController@destroy');
+Route::delete('/photos/{id}', 'PhotosController@destroy')->name('photo-destroy');
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -56,8 +56,8 @@
     </div>
     <div class="col-md-7">
       @if (count($phone->photos) > 0)
-      <!--Carousel Wrapper-->
-      <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" data-pause="hover">
+        <!--Carousel Wrapper-->
+        <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" data-pause="hover">
 
           <!--Indicators-->
           <ol class="carousel-indicators">
@@ -69,59 +69,61 @@
             @endforeach
           </ol>
           <!--/.Indicators-->
+      @endif
           <!--Slides-->
-
           <div class="carousel-inner" role="listbox">
-          <!--First slide-->
-          <div class="carousel-item peopleCarouselImg active">
+            <!--First slide-->
+            <div class="carousel-item peopleCarouselImg active">
               <a href="/storage/phones/{{ $phone->cover_image }}" data-size="1600x1067">
+              <!-- cover img storage -->
                 <img src="/storage/phones/{{ $phone->cover_image }}" alt="{{ $phone->cover_image }}" class="d-block w-50 img-thumbnail mx-auto">
               </a>
-            <!-- <img src="/storage/phones/{{ $phone->cover_image }}" alt="{{ $phone->cover_image }}" /> -->
-          </div>
-          <!--/First slide-->
-          @foreach ($phone->photos as $photo)
-          <!--Second slide-->
-          <div class="carousel-item peopleCarouselImg">
-            @if(Auth::check())
-              <form class="pl-4" action="/photos/{{ $photo->id }}" method="post">
-                @csrf
-                @method('DELETE')
-                <button type="submit" name="button" class="btn btn-danger"><i class="fas fa-times"></i></button>
-              </form>
+            </div>
+            <!--/First slide-->
+            @if (count($phone->photos) > 0)
+              @foreach ($phone->photos as $photo)
+                <!--Second slide-->
+                <div class="carousel-item peopleCarouselImg">
+
+                  <!-- phone photos storage -->
+                  <img class="d-block w-50 img-thumbnail mx-auto" src="/storage/phones/{{ $photo->phone_id }}/{{ $photo->photo }}" alt="{{ $phone->cover_image }}" />
+                  @if(Auth::check())
+                    <form class="in-image" action="{{ route('photo-destroy', $photo->id) }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" name="button" class="btn btn-danger"><i class="fas fa-times"></i></button>
+                    </form>
+                  @endif
+                </div>
+                <!--/Second slide-->
+              @endforeach
             @endif
-            <img class="d-block w-50 img-thumbnail mx-auto" src="/storage/phones/{{ $phone->id }}/{{ $photo->photo }}" alt="{{ $phone->cover_image }}" />
-          </div>
-          <!--/Second slide-->
-          @endforeach
           </div>
           <!--/.Slides-->
 
-        <!--Controls-->
-        <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-        <!--/.Controls-->
-      </div>
-      <!--/.Carousel Wrapper-->
-      @else
-        <p class="title" style="text-decoration: underline;" >You dont have any photos of 📱 yet</p>
-      @endif
+          <!--Controls-->
+          <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+          <!--/.Controls-->
 
+        </div>
+        <!--/.Carousel Wrapper-->
     </div>
     @if(Auth::check())
       <form class="pl-4" action="/phones/{{ $phone->id }}" method="post">
         @csrf
         @method('DELETE')
-        <button type="submit" name="button" class="btn btn-danger">Delete</button>
+        <button type="submit" name="button" class="btn btn-danger">Delete This Phone</button>
       </form>
     @endif
-  </div>
+</div>
+
 
 
 @endsection
