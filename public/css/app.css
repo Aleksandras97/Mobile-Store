@@ -10896,6 +10896,11 @@ body {
   padding: 10px;
 }
 
+.background-log-reg {
+  margin-top: 50px;
+  padding: 10px;
+}
+
 .custom-nav {
   background-color: #111;
   display: inline-block;
