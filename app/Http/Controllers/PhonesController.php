@@ -128,23 +128,38 @@ class PhonesController extends Controller
           'ramSize' => 'required',
           'storageSize' => 'required',
           'color' => 'required',
-          'price' => 'required|numeric'
+          'price' => 'required|numeric',
+          'cover-image' => 'required|image'
 
       ]);
 
+      $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
+      $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+      $extension = $request->file('cover-image')->getClientOriginalExtension();
+      $filenameToStore = $filename . '_' . time() . '.' . $extension;
+
+      //Saves image
+      $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
+
       $phone = Phone::find($id);
-    
-      $phone->brand = $request->input('brand');
-      $phone->model = $request->input('model');
-      $phone->screen_size = $request->input('screenSize');
-      $phone->RAMsize = $request->input('ramSize');
-      $phone->storage_size = $request->input('storageSize');
-      $phone->color = $request->input('color');
-      $phone->price = $request->input('price');
-      $phone->save();
+
+      if (Storage::delete('public/phones/'  .$phone->cover_image)) {
+
+        $phone->brand = $request->input('brand');
+        $phone->model = $request->input('model');
+        $phone->screen_size = $request->input('screenSize');
+        $phone->RAMsize = $request->input('ramSize');
+        $phone->storage_size = $request->input('storageSize');
+        $phone->color = $request->input('color');
+        $phone->price = $request->input('price');
+        $phone->cover_image = $filenameToStore;
+        $phone->save();
 
 
-      return redirect()->to('/home')->with('success', "Phone edited successfully");
+        return redirect()->to('/home')->with('success', "Phone edited successfully");
+      }
+
+
 
 
     }

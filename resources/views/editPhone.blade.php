@@ -6,7 +6,7 @@
     <h1>Edit Your Phone</h1>
     <div class="row">
       <div class="col-md-5">
-        <form method="post" action="/phones/{{ $phone->id }}">
+        <form method="post" action="/phones/{{ $phone->id }}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
           <div class="form-group">
@@ -36,6 +36,10 @@
           <div class="form-group">
             <label for="price">Price</label>
             <input type="integer" class="form-control" name="price" id="price" placeholder="Ender Price" value="{{ $phone->price }}">
+          </div>
+          <div class="form-group">
+            <label for="cover-image">Cover Image</label>
+            <input type="file" class="form-control" name="cover-image" id="cover-image">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
