@@ -27,9 +27,26 @@ class PhonesController extends Controller
      */
     public function index()
     {
-        $phones = Phone::orderBy('created_at', 'desc')->get();
+        $phones = Phone::orderBy('created_at', 'desc')->paginate(3);
 
         return view('index')->with('phones', $phones);
+    }
+
+    public function search(Request $request)
+    {
+      $request->validate([
+        'query' => 'min:3',
+      ]);
+
+      $query = $request->input('query');
+
+      $phones = Phone::where('brand', 'like', "%$query%")
+                     ->orWhere('model', 'like', "%$query%")
+                     ->orWhere('screen_size', 'like', "%$query%")
+                     ->orWhere('RAMsize', 'like', "%$query%")
+                     ->orWhere('storage_size', 'like', "%$query%")->paginate(3);
+
+      return view('search-rezults')->with('phones', $phones);
     }
 
     /**
@@ -129,34 +146,51 @@ class PhonesController extends Controller
           'storageSize' => 'required',
           'color' => 'required',
           'price' => 'required|numeric',
-          'cover-image' => 'required|image'
+          'cover-image' => 'image'
 
       ]);
+      if($request->file('cover-image') == null){
 
-      $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
-      $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
-      $extension = $request->file('cover-image')->getClientOriginalExtension();
-      $filenameToStore = $filename . '_' . time() . '.' . $extension;
+          $phone = Phone::find($id);
 
-      //Saves image
-      $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
-
-      $phone = Phone::find($id);
-
-      if (Storage::delete('public/phones/'  .$phone->cover_image)) {
-
-        $phone->brand = $request->input('brand');
-        $phone->model = $request->input('model');
-        $phone->screen_size = $request->input('screenSize');
-        $phone->RAMsize = $request->input('ramSize');
-        $phone->storage_size = $request->input('storageSize');
-        $phone->color = $request->input('color');
-        $phone->price = $request->input('price');
-        $phone->cover_image = $filenameToStore;
-        $phone->save();
+          $phone->brand = $request->input('brand');
+          $phone->model = $request->input('model');
+          $phone->screen_size = $request->input('screenSize');
+          $phone->RAMsize = $request->input('ramSize');
+          $phone->storage_size = $request->input('storageSize');
+          $phone->color = $request->input('color');
+          $phone->price = $request->input('price');
+          $phone->save();
 
 
-        return redirect()->to('/home')->with('success', "Phone edited successfully");
+          return redirect()->to('/home')->with('success', "Phone edited successfully");
+      } else {
+        $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
+        $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+        $extension = $request->file('cover-image')->getClientOriginalExtension();
+        $filenameToStore = $filename . '_' . time() . '.' . $extension;
+
+        //Saves image
+        $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
+
+        $phone = Phone::find($id);
+
+        if (Storage::delete('public/phones/'  .$phone->cover_image)) {
+
+          $phone->brand = $request->input('brand');
+          $phone->model = $request->input('model');
+          $phone->screen_size = $request->input('screenSize');
+          $phone->RAMsize = $request->input('ramSize');
+          $phone->storage_size = $request->input('storageSize');
+          $phone->color = $request->input('color');
+          $phone->price = $request->input('price');
+          $phone->cover_image = $filenameToStore;
+          $phone->save();
+
+
+          return redirect()->to('/home')->with('success', "Phone edited successfully");
+      }
+
       }
 
 

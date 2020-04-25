@@ -8,19 +8,16 @@
             {{ session('status') }}
         </div>
     @endif
-    <h2 class="title">Latest Phones</h2>
-    @if (count($phones))
+    <h2 class="title">Search results</h2>
+
     <div class="container">
+      <p>{{ $phones->total() }} result(s) for '{{ request()->input('query') }}'</p>
 
         @include('inc.cards')
 
         @include('inc.links')
 
-      </div>
-
-    @else
-      <p class="title" style="text-decoration: underline;" >No Phones found</p>
-    @endif
+    </div>
 
 
 

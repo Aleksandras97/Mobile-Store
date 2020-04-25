@@ -10901,36 +10901,18 @@ body {
   padding: 10px;
 }
 
-.custom-nav {
-  background-color: #111;
-  display: inline-block;
-  width: 100%;
-}
-
-.border-gradient-nav {
-  border: 10px solid;
-  border-image-slice: 1;
-  border-width: 1px;
+.footer {
+  padding: 0.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: 0.05rem solid #e5e5e5;
 }
 
 .border-gradient {
   border: 10px solid;
   border-image-slice: 1;
   border-width: 5px;
-}
-
-.border-gradient-purple {
-  border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
-}
-
-.border-gradient-card {
-  border-image-source: linear-gradient(white, #0e2431);
-}
-
-.add-button {
-  position: absolute;
-  bottom: 28rem;
-  right: 2rem;
 }
 
 .card-img img {
@@ -10944,8 +10926,36 @@ body {
   padding: 3% 2%;
 }
 
-.color-phone {
-  background-color: #0e2431;
+.image {
+  height: 12rem;
+  width: 11rem;
+}
+
+.image img {
+  height: 100%;
+  width: 100%;
+}
+
+.add-button {
+  position: absolute;
+  bottom: 28rem;
+  right: 2rem;
+}
+
+.custom-nav {
+  background-color: #111;
+  display: inline-block;
+  width: 100%;
+}
+
+.border-gradient-nav {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 1px;
+}
+
+.border-gradient-purple {
+  border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
 }
 
 .detail-table th {

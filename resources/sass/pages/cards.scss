@@ -1,0 +1,27 @@
+.border-gradient {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+}
+
+.card-img img {
+  max-width: 100%;
+  vertical-align: top;
+  display:inline-block;
+  padding: 30px;
+}
+
+.pricing-cards{
+  padding: 3% 2%;
+}
+
+.image {
+  height: 12rem;
+  width: 11rem;
+}
+
+.image img {
+  height: 100%;
+  width: 100%;
+
+}
