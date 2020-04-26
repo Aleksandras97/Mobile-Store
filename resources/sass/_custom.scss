@@ -1,5 +1,6 @@
 body {
-  font-family: 'Baloo Paaji 2', cursive;
+  // font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Droid Serif";
   background-color: white;
   background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
 }
@@ -11,6 +12,14 @@ body {
   font-weight: bold;
 }
 
+.masthead-heading {
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 .background {
   background-color: #deeaee;
   margin-top: 50px;
@@ -18,8 +27,7 @@ body {
 }
 
 .background-log-reg {
-  margin-top: 50px;
-  padding: 10px;
+  padding: 5rem 3rem 5rem;
 }
 
 .footer {
