@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Phone;
 
 class Photo extends Model
 {
 
   public function phone(){
-    return $this->belongsTo('App\Models\Phone');
+    return $this->belongsTo(Phone::class);
   }
 }

@@ -32,15 +32,15 @@
         </tr>
         <tr>
           <th scope="row">Screen Size:</th>
-          <td>{{ $phone->screen_size}}</td>
+          <td>{{ $phone->screen_size}} cm²</td>
         </tr>
         <tr>
           <th scope="row">RAM Size:</th>
-          <td>{{ $phone->RAMsize}}</td>
+          <td>{{ $phone->RAMsize}}GB RAM</td>
         </tr>
         <tr>
           <th scope="row">Storage Size:</th>
-          <td>{{ $phone->storage_size}}</td>
+          <td>{{ $phone->storage_size}}GB</td>
 
         </tr>
         <tr>

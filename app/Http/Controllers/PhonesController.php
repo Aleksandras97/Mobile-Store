@@ -27,9 +27,15 @@ class PhonesController extends Controller
      */
     public function index()
     {
-        $phones = Phone::orderBy('created_at', 'desc')->paginate(3);
+        // $phones = Phone::orderBy('created_at', 'desc')->paginate(3);
 
-        return view('index')->with('phones', $phones);
+        $latestPhones = Phone::latestPhones();
+
+        $cheapPhones = Phone::cheapPhones();
+
+        $forGaming = Phone::forgamingPhones();
+
+        return view('phones.index', compact('latestPhones', 'cheapPhones', 'forGaming'));
     }
 
     public function search(Request $request)
@@ -46,7 +52,7 @@ class PhonesController extends Controller
                      ->orWhere('RAMsize', 'like', "%$query%")
                      ->orWhere('storage_size', 'like', "%$query%")->paginate(3);
 
-      return view('search-rezults')->with('phones', $phones);
+      return view('phones.search-rezults', compact('phones'));
     }
 
     /**
@@ -56,7 +62,7 @@ class PhonesController extends Controller
      */
     public function create()
     {
-        return view('createPhone');
+        return view('phones.create');
     }
 
     /**
@@ -65,9 +71,10 @@ class PhonesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-      $this->validate($request, [
+      $this->validate(request(), [
+
           'brand' => 'required',
           'model' => 'required',
           'screenSize' => 'required',
@@ -78,29 +85,30 @@ class PhonesController extends Controller
           'cover-image' => 'required|image'
 
       ]);
+      //dd(request('ramSize'));
       //Gets image name with extension
-      $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
+      $filenameWithExtension = request()->file('cover-image')->getClientOriginalName();
       $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
-      $extension = $request->file('cover-image')->getClientOriginalExtension();
+      $extension = request()->file('cover-image')->getClientOriginalExtension();
       $filenameToStore = $filename . '_' . time() . '.' . $extension;
-
       //Saves image
-      $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
-      //dd($path);
-      $phone = new Phone();
+      request()->file('cover-image')->storeAs('public/phones', $filenameToStore);
 
-      $phone->brand = $request->input('brand');
-      $phone->model = $request->input('model');
-      $phone->screen_size = $request->input('screenSize');
-      $phone->RAMsize = $request->input('ramSize');
-      $phone->storage_size = $request->input('storageSize');
-      $phone->color = $request->input('color');
-      $phone->price = $request->input('price');
-      $phone->cover_image = $filenameToStore;
-      $phone->user_id = Auth::id();
-      $phone->save();
+      //$user_id = Auth::id();
+      Phone::create([
 
-      return redirect()->to('/home')->with('success', "Phone added successfully");
+        'brand' => request('brand'),
+        'model' => request('model'),
+        'screen_size' => request('screenSize'),
+        'RAMsize' => request('ramSize'),
+        'storage_size' => request('storageSize'),
+        'color' => request('color'),
+        'price' => request('price'),
+        'cover_image' => $filenameToStore,
+        'user_id' => Auth::id()
+
+      ]);
+      return redirect()->home()->with('success', "Phone added successfully");
     }
 
     /**
@@ -114,7 +122,7 @@ class PhonesController extends Controller
         $phone = Phone::with('photos')->find($id);
 
 
-        return view('phone')->with('phone', $phone);
+        return view('phones.show')->with('phone', $phone);
     }
 
     /**
@@ -126,7 +134,7 @@ class PhonesController extends Controller
     public function edit($id)
     {
         $phone = Phone::find($id);
-        return view('editPhone')->with("phone", $phone);
+        return view('phones.edit')->with("phone", $phone);
     }
 
     /**
@@ -136,9 +144,9 @@ class PhonesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-      $this->validate($request, [
+      $this->validate(request(), [
           'brand' => 'required',
           'model' => 'required',
           'screenSize' => 'required',
@@ -149,46 +157,47 @@ class PhonesController extends Controller
           'cover-image' => 'image'
 
       ]);
-      if($request->file('cover-image') == null){
+      if(request()->file('cover-image') == null){
 
           $phone = Phone::find($id);
 
-          $phone->brand = $request->input('brand');
-          $phone->model = $request->input('model');
-          $phone->screen_size = $request->input('screenSize');
-          $phone->RAMsize = $request->input('ramSize');
-          $phone->storage_size = $request->input('storageSize');
-          $phone->color = $request->input('color');
-          $phone->price = $request->input('price');
+          $phone->brand = request()->input('brand');
+          $phone->model = request()->input('model');
+          $phone->screen_size = request()->input('screenSize');
+          $phone->RAMsize = request()->input('ramSize');
+          $phone->storage_size = request()->input('storageSize');
+          $phone->color = request()->input('color');
+          $phone->price = request()->input('price');
           $phone->save();
 
 
-          return redirect()->to('/home')->with('success', "Phone edited successfully");
+
+          return redirect()->home()->with('success', "Phone edited successfully");
       } else {
-        $filenameWithExtension = $request->file('cover-image')->getClientOriginalName();
+        $filenameWithExtension = request()->file('cover-image')->getClientOriginalName();
         $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
-        $extension = $request->file('cover-image')->getClientOriginalExtension();
+        $extension = request()->file('cover-image')->getClientOriginalExtension();
         $filenameToStore = $filename . '_' . time() . '.' . $extension;
 
         //Saves image
-        $request->file('cover-image')->storeAs('public/phones', $filenameToStore);
+        request()->file('cover-image')->storeAs('public/phones', $filenameToStore);
 
         $phone = Phone::find($id);
 
         if (Storage::delete('public/phones/'  .$phone->cover_image)) {
 
-          $phone->brand = $request->input('brand');
-          $phone->model = $request->input('model');
-          $phone->screen_size = $request->input('screenSize');
-          $phone->RAMsize = $request->input('ramSize');
-          $phone->storage_size = $request->input('storageSize');
-          $phone->color = $request->input('color');
-          $phone->price = $request->input('price');
+          $phone->brand = request()->input('brand');
+          $phone->model = request()->input('model');
+          $phone->screen_size = request()->input('screenSize');
+          $phone->RAMsize = request()->input('ramSize');
+          $phone->storage_size = request()->input('storageSize');
+          $phone->color = request()->input('color');
+          $phone->price = request()->input('price');
           $phone->cover_image = $filenameToStore;
           $phone->save();
 
 
-          return redirect()->to('/home')->with('success', "Phone edited successfully");
+          return redirect()->home()->with('success', "Phone edited successfully");
       }
 
       }

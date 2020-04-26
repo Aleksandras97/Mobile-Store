@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Storage;
 
 class PhotosController extends Controller
 {
+
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +35,7 @@ class PhotosController extends Controller
      */
     public function create(int $phoneId)
     {
-        return view('createPhoto')->with('phoneId', $phoneId);
+        return view('photos.create')->with('phoneId', $phoneId);
     }
 
     /**
@@ -34,30 +44,30 @@ class PhotosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-      $this->validate($request, [
+      $this->validate(request(), [
 
           'photo' => 'required|image'
 
       ]);
       //Gets image name with extension
-      $filenameWithExtension = $request->file('photo')->getClientOriginalName();
+      $filenameWithExtension = request()->file('photo')->getClientOriginalName();
       $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
-      $extension = $request->file('photo')->getClientOriginalExtension();
+      $extension = request()->file('photo')->getClientOriginalExtension();
       $filenameToStore = $filename . '_' . time() . '.' . $extension;
-
       //Saves image
-      $request->file('photo')->storeAs('public/phones/' . $request->input('phone-id'), $filenameToStore);
+      request()->file('photo')->storeAs('public/phones/' . request()->input('phone-id'), $filenameToStore);
       //dd($path);
-      $photo = new Photo();
+      Photo::create([
 
-      $photo->phone_id = $request->input('phone-id');
-      $photo->size = $request->file('photo')->getSize();
-      $photo->photo = $filenameToStore;
-      $photo->save();
+        'photo' => $filenameToStore,
+        'phone_id' => request()->input('phone-id'),
+        'size' => request()->file('photo')->getSize()
 
-      return redirect('/phones/' . $request->input('phone-id'))->with('success', "Photo uploaded successfully");
+      ]);
+
+      return redirect('/phones/' . request()->input('phone-id'))->with('success', "Photo uploaded successfully");
     }
 
     /**

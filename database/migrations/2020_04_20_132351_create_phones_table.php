@@ -17,9 +17,9 @@ class CreatePhonesTable extends Migration
             $table->id();
             $table->string('brand');
             $table->string('model');
-            $table->string('screen_size');
-            $table->string('RAMsize');
-            $table->string('storage_size');
+            $table->double('screen_size');
+            $table->integer('RAMsize');
+            $table->integer('storage_size');
             $table->string('color');
             $table->double('price');
             $table->string('cover_image');
