@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<section class="page-section">
 
-  <div class="container background p-4">
+  <div class="container background p-4 rounded">
     <h1>Add New Photo</h1>
     <div class="row">
       <div class="col-md-5">
@@ -18,6 +19,7 @@
     </div>
 
   </div>
+</section>
 
 
 @endsection

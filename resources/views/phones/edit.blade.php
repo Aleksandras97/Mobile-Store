@@ -2,7 +2,7 @@
 
 @section('content')
 
-  <div class="container background p-4">
+  <div class="container background p-4 rounded">
     <h1>Edit Your Phone</h1>
     <div class="row">
       <div class="col-md-5">

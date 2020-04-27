@@ -8,15 +8,21 @@
               {{ session('status') }}
           </div>
       @endif
-      <h2 class="masthead-heading text-center">Search results</h2>
 
-      <div class="container">
-        <p class="masthead-subheading text-center" >{{ $phones->total() }} result(s) for '{{ request()->input('query') }}'</p>
+      @if (count($phones))
 
-          @include('inc.cards')
+        <h2 class="masthead-heading text-center">Results</h2>
 
-          @include('inc.links')
+        <div class="container">
 
-      </div>
+            @include('inc.cards')
+
+            @include('inc.links')
+
+        </div>
+      @else
+        <p class="title" style="text-decoration: underline;" >Sorry we dont have anything with
+          '{{ request()->input('query')}}' try putting real phone brands</p>
+      @endif
   </section>
 @endsection

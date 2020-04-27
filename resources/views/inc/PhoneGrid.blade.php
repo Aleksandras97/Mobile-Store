@@ -1,10 +1,6 @@
 <!-- phone Grid-->
 <section class="page-section bg-light" id="phone">
     <div class="container my-5">
-        {{-- <div class="text-center">
-            <h2 class="masthead-heading">phone</h2>
-            <h3 class="masthead-subheading">Lorem ipsum dolor sit amet consectetur.</h3>
-        </div> --}}
         <div class="row">
             <div class="col-lg-4 col-sm-6 mb-4">
                 <div class="phone-item">
