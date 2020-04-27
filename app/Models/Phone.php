@@ -9,29 +9,38 @@ use Illuminate\Support\Str;
 class Phone extends Model
 {
 
-  public static function latestPhones(){
+  public function scopeLatestPhones($query){
 
-    return static::orderBy('created_at', 'desc')->paginate(3);
-
-  }
-
-  public static function cheapPhones(){
-
-    return static::where('price', '<', 500)->orderBy('price', 'desc')->paginate(3);
+    return $query->latest();
 
   }
 
-  public static function expensivePhones(){
+  public function scopeCheapPhones($query){
 
-    return static::where('price', '>', 1000)->orderBy('price', 'desc')->paginate(3);
+    return $query->where('price', '<', 500)->orderBy('price', 'desc');
 
   }
 
-  public static function forgamingPhones(){
+  public function scopeExpensivePhones($query){
+
+    return $query->where('price', '>', 1000)->orderBy('price', 'desc');
+
+  }
+
+  public function scopeforgamingPhones($query){
 
 
-    return static::where([['storage_size', '>', 32],['RAMsize', '>', 3],])->orderBy('RAMsize', 'desc')->paginate(3);
+    return $query->where([['storage_size', '>', 32],['RAMsize', '>', 3],])->orderBy('RAMsize', 'desc');
 
+  }
+
+  public function scopeSearchPhones($q, $query){
+
+    return $q->where('brand', 'like', "%$query%")
+                   ->orWhere('model', 'like', "%$query%")
+                   ->orWhere('screen_size', 'like', "$query")
+                   ->orWhere('RAMsize', 'like', "$query")
+                   ->orWhere('storage_size', 'like', "$query");
   }
 
   public function user(){

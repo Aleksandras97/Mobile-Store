@@ -27,15 +27,11 @@ class PhonesController extends Controller
      */
     public function index()
     {
-        // $phones = Phone::orderBy('created_at', 'desc')->paginate(3);
+        $phones = Phone::orderBy('created_at', 'desc')->paginate(3);
 
-        $latestPhones = Phone::latestPhones();
 
-        $cheapPhones = Phone::cheapPhones();
 
-        $forGaming = Phone::forgamingPhones();
-
-        return view('phones.index', compact('latestPhones', 'cheapPhones', 'forGaming'));
+        return view('phones.index', compact('phones'));
     }
 
     public function search(Request $request)
@@ -44,13 +40,25 @@ class PhonesController extends Controller
         'query' => 'min:3',
       ]);
 
-      $query = $request->input('query');
+      $query = request('query');
 
-      $phones = Phone::where('brand', 'like', "%$query%")
-                     ->orWhere('model', 'like', "%$query%")
-                     ->orWhere('screen_size', 'like', "%$query%")
-                     ->orWhere('RAMsize', 'like', "%$query%")
-                     ->orWhere('storage_size', 'like', "%$query%")->paginate(3);
+      if (request('phones') == "latestPhones") {
+
+        $phones = Phone::latestPhones()->paginate(3);
+
+      } elseif (request('phones') == "cheapPhones") {
+
+        $phones = Phone::cheapPhones()->paginate(3);
+
+      } elseif (request('phones') == "forgamingPhones") {
+
+        $phones = Phone::forgamingPhones()->paginate(3);
+
+      } else {
+
+        $phones = Phone::SearchPhones($query)->paginate(3);
+
+      }
 
       return view('phones.search-rezults', compact('phones'));
     }
