@@ -33,7 +33,7 @@
 
     <div class="col-md-8">
 
-      @include('phoneInc.carousel')
+      @include('inc.carousel')
 
     </div>
 

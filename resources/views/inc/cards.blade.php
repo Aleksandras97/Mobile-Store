@@ -9,10 +9,15 @@
                     />
                 </div>
                 <div class="card-body">
+
                     <h4 class="card-title">{{ $phone->model}}</h4>
+
                     <h3 class="card-text">{{ $phone->brand}}</h3>
+
                     <p class="card-text">€ {{ $phone->price}}</p>
+
                     <a href="/phones/{{ $phone->id }}"><button class="btn btn-primary btn-sm btn-rounded" >Preview</button></a>
+                    
                 </div>
             </div>
         </div>
