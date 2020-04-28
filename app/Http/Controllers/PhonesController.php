@@ -6,9 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Phone;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PhonesController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show', 'search']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +27,40 @@ class PhonesController extends Controller
      */
     public function index()
     {
-        $phones = Phone::get();
+        $phones = Phone::orderBy('created_at', 'desc')->paginate(3);
 
-        return view('home')->with('phones', $phones);
+
+
+        return view('phones.index', compact('phones'));
+    }
+
+    public function search(Request $request)
+    {
+      $request->validate([
+        'query' => 'min:3',
+      ]);
+
+      $query = request('query');
+
+      if (request('phones') == "latestPhones") {
+
+        $phones = Phone::latestPhones()->paginate(3);
+
+      } elseif (request('phones') == "cheapPhones") {
+
+        $phones = Phone::cheapPhones()->paginate(3);
+
+      } elseif (request('phones') == "forgamingPhones") {
+
+        $phones = Phone::forgamingPhones()->paginate(3);
+
+      } else {
+
+        $phones = Phone::SearchPhones($query)->paginate(3);
+
+      }
+
+      return view('phones.search-rezults', compact('phones'));
     }
 
     /**
@@ -28,7 +70,7 @@ class PhonesController extends Controller
      */
     public function create()
     {
-        return view('createPhone');
+        return view('phones.create');
     }
 
     /**
@@ -37,9 +79,10 @@ class PhonesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-      $this->validate($request, [
+      $this->validate(request(), [
+
           'brand' => 'required',
           'model' => 'required',
           'screenSize' => 'required',
@@ -47,22 +90,33 @@ class PhonesController extends Controller
           'storageSize' => 'required',
           'color' => 'required',
           'price' => 'required|numeric',
+          'cover-image' => 'required|image'
 
       ]);
+      //dd(request('ramSize'));
+      //Gets image name with extension
+      $filenameWithExtension = request()->file('cover-image')->getClientOriginalName();
+      $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+      $extension = request()->file('cover-image')->getClientOriginalExtension();
+      $filenameToStore = $filename . '_' . time() . '.' . $extension;
+      //Saves image
+      request()->file('cover-image')->storeAs('public/phones', $filenameToStore);
 
-      $phone = new Phone();
+      //$user_id = Auth::id();
+      Phone::create([
 
-      $phone->brand = $request->input('brand');
-      $phone->model = $request->input('model');
-      $phone->screen_size = $request->input('screenSize');
-      $phone->RAMsize = $request->input('ramSize');
-      $phone->storage_size = $request->input('storageSize');
-      $phone->color = $request->input('color');
-      $phone->price = $request->input('price');
-      $phone->user_id = Auth::id();
-      $phone->save();
+        'brand' => request('brand'),
+        'model' => request('model'),
+        'screen_size' => request('screenSize'),
+        'RAMsize' => request('ramSize'),
+        'storage_size' => request('storageSize'),
+        'color' => request('color'),
+        'price' => request('price'),
+        'cover_image' => $filenameToStore,
+        'user_id' => Auth::id()
 
-      return redirect()->to('/home')->with('success', "Phone added successfully");
+      ]);
+      return redirect()->home()->with('success', "Phone added successfully");
     }
 
     /**
@@ -73,9 +127,10 @@ class PhonesController extends Controller
      */
     public function show($id)
     {
-        $phone = Phone::find($id);
+        $phone = Phone::with('photos')->find($id);
 
-        return view('phone')->with('phone', $phone);
+
+        return view('phones.show')->with('phone', $phone);
     }
 
     /**
@@ -86,7 +141,8 @@ class PhonesController extends Controller
      */
     public function edit($id)
     {
-        return view('editPhone');
+        $phone = Phone::find($id);
+        return view('phones.edit')->with("phone", $phone);
     }
 
     /**
@@ -96,37 +152,67 @@ class PhonesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-      $validator = Validator::make($request->all(), [
+      $this->validate(request(), [
           'brand' => 'required',
           'model' => 'required',
-          'screen_size' => 'required',
-          'RAMsize' => 'required',
-          'storage_size' => 'required',
+          'screenSize' => 'required',
+          'ramSize' => 'required',
+          'storageSize' => 'required',
           'color' => 'required',
-          'price' => 'required',
+          'price' => 'required|numeric',
+          'cover-image' => 'image'
 
       ]);
+      if(request()->file('cover-image') == null){
 
-      if ($validator->fails()) {
-        return ['response' => $validator->messages(), 'success' => false];
-          // return redirect('post/create')
-          //             ->withErrors($validator)
-          //             ->withInput();
+          $phone = Phone::find($id);
+
+          $phone->brand = request()->input('brand');
+          $phone->model = request()->input('model');
+          $phone->screen_size = request()->input('screenSize');
+          $phone->RAMsize = request()->input('ramSize');
+          $phone->storage_size = request()->input('storageSize');
+          $phone->color = request()->input('color');
+          $phone->price = request()->input('price');
+          $phone->save();
+
+
+
+          return redirect()->home()->with('success', "Phone edited successfully");
+      } else {
+        $filenameWithExtension = request()->file('cover-image')->getClientOriginalName();
+        $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+        $extension = request()->file('cover-image')->getClientOriginalExtension();
+        $filenameToStore = $filename . '_' . time() . '.' . $extension;
+
+        //Saves image
+        request()->file('cover-image')->storeAs('public/phones', $filenameToStore);
+
+        $phone = Phone::find($id);
+
+        if (Storage::delete('public/phones/'  .$phone->cover_image)) {
+
+          $phone->brand = request()->input('brand');
+          $phone->model = request()->input('model');
+          $phone->screen_size = request()->input('screenSize');
+          $phone->RAMsize = request()->input('ramSize');
+          $phone->storage_size = request()->input('storageSize');
+          $phone->color = request()->input('color');
+          $phone->price = request()->input('price');
+          $phone->cover_image = $filenameToStore;
+          $phone->save();
+
+
+          return redirect()->home()->with('success', "Phone edited successfully");
       }
 
-      $phone =  Phone::find($id);
-      $phone->brand = $request->input('brand');
-      $phone->model = $request->input('model');
-      $phone->screen_size = $request->input('screen_size');
-      $phone->RAMsize = $request->input('RAMsize');
-      $phone->storage_size = $request->input('storage_size');
-      $phone->color = $request->input('color');
-      $phone->price = $request->input('price');
-      $phone->save();
+      }
 
-      return response()->json($phone);
+
+
+
     }
 
     /**
@@ -141,6 +227,6 @@ class PhonesController extends Controller
 
         $phone->delete();
 
-        return ['response' => 'Phone deleted', 'success' => true];
+        return redirect()->to('/home')->with('danger', "Phone deleted successfully");
     }
 }

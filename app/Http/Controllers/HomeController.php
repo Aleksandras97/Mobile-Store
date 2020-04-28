@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $phones = Auth::user()->phones;
+        $phones = Auth::user()->phones()->paginate(3);
 
 
         return view('home')->with('phones', $phones);

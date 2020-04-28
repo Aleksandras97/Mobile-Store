@@ -13,12 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', 'PhonesController@index');
 
 Auth::routes();
 
 Route::resource('phones', 'PhonesController');
 
+Route::get('/photos/create/{phoneId}', 'PhotosController@create')->name('photo-create');
+
+Route::post('/photos/store', 'PhotosController@store')->name('photo-store');
+
+Route::delete('/photos/{id}', 'PhotosController@destroy')->name('photo-destroy');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/search', 'PhonesController@search')->name('search');
