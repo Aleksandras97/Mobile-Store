@@ -17,13 +17,13 @@ class UserSeeder extends Seeder
         User::create([
           'name' => 'Aleksandras',
           'email' => 'aleksandrnarusevic1@gmail.com',
-          'password' => Hash::make('Aleksandras')
+          'password' => bcrypt('Aleksandras') //can put passwords into env file
         ]);
 
         User::create([
         'name' => 'Modestas',
         'email' => 'modestas@gmail.com',
-        'password' => Hash::make('asModestas')
+        'password' => bcrypt('asModestas') //can put passwords into env file
       ]);
 
     }

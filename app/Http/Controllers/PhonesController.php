@@ -18,7 +18,7 @@ class PhonesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show', 'search']]);
+        $this->middleware(['auth', 'verified'], ['except' => ['index', 'show', 'search']]);
     }
     /**
      * Display a listing of the resource.
