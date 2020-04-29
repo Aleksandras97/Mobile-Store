@@ -20,9 +20,13 @@
             @include('inc.links')
 
         </div>
+
       @else
-        <p class="title" style="text-decoration: underline;" >Sorry we dont have anything with
-          '{{ request()->input('query')}}' try putting real phone brands</p>
+
+        <p class="title" style="text-decoration: underline;" >
+          Sorry we dont have anything with '{{ request()->input('query')}}' try putting real phone brands</p>
+
       @endif
+
   </section>
 @endsection

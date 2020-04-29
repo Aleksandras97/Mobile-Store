@@ -16,7 +16,7 @@ class PhotosController extends Controller
    */
   public function __construct()
   {
-      $this->middleware('auth');
+      $this->middleware(['auth', 'verified']);
   }
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class PhotosController extends Controller
      */
     public function create(int $phoneId)
     {
-        return view('photos.create')->with('phoneId', $phoneId);
+        return view('photos.create', compact('phoneId'));
     }
 
     /**
@@ -114,12 +114,10 @@ class PhotosController extends Controller
     {
       $photo = Photo::find($id);
 
-      //dd(Storage::delete('/storage/phones/' . $photo->phone_id. '/' .$photo->photo));
-
       if (Storage::delete('public/phones/' . $photo->phone_id. '/' .$photo->photo)) {
         $photo->delete();
 
-        return redirect('/home')->with('danger', "Photo deleted successfully");
+        return redirect()->home()->with('danger', "Photo deleted successfully");
       }
     }
 }

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PhonesController@index');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::resource('phones', 'PhonesController');
 

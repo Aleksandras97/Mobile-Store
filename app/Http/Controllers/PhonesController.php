@@ -18,7 +18,7 @@ class PhonesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show', 'search']]);
+        $this->middleware(['auth', 'verified'], ['except' => ['index', 'show', 'search']]);
     }
     /**
      * Display a listing of the resource.
@@ -93,16 +93,14 @@ class PhonesController extends Controller
           'cover-image' => 'required|image'
 
       ]);
-      //dd(request('ramSize'));
       //Gets image name with extension
       $filenameWithExtension = request()->file('cover-image')->getClientOriginalName();
       $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
       $extension = request()->file('cover-image')->getClientOriginalExtension();
       $filenameToStore = $filename . '_' . time() . '.' . $extension;
-      //Saves image
+      //Saves image to storage folder
       request()->file('cover-image')->storeAs('public/phones', $filenameToStore);
 
-      //$user_id = Auth::id();
       Phone::create([
 
         'brand' => request('brand'),
@@ -130,7 +128,7 @@ class PhonesController extends Controller
         $phone = Phone::with('photos')->find($id);
 
 
-        return view('phones.show')->with('phone', $phone);
+        return view('phones.show',  compact('phone'));
     }
 
     /**
@@ -142,7 +140,7 @@ class PhonesController extends Controller
     public function edit($id)
     {
         $phone = Phone::find($id);
-        return view('phones.edit')->with("phone", $phone);
+        return view('phones.edit', compact('phone'));
     }
 
     /**
@@ -165,6 +163,7 @@ class PhonesController extends Controller
           'cover-image' => 'image'
 
       ]);
+
       if(request()->file('cover-image') == null){
 
           $phone = Phone::find($id);
@@ -181,7 +180,9 @@ class PhonesController extends Controller
 
 
           return redirect()->home()->with('success', "Phone edited successfully");
+
       } else {
+        //Gets image name with extension
         $filenameWithExtension = request()->file('cover-image')->getClientOriginalName();
         $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
         $extension = request()->file('cover-image')->getClientOriginalExtension();
@@ -192,7 +193,7 @@ class PhonesController extends Controller
 
         $phone = Phone::find($id);
 
-        if (Storage::delete('public/phones/'  .$phone->cover_image)) {
+        if (Storage::delete('public/phones/' . $phone->cover_image)) {
 
           $phone->brand = request()->input('brand');
           $phone->model = request()->input('model');
@@ -227,6 +228,6 @@ class PhonesController extends Controller
 
         $phone->delete();
 
-        return redirect()->to('/home')->with('danger', "Phone deleted successfully");
+        return redirect()->home()->with('danger', "Phone deleted successfully");
     }
 }
