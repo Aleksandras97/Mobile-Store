@@ -13,8 +13,6 @@ Application for registered users sell phones using Laravel, Bootstrap.
 
 ### Running this web application
 
-### Running this web application
-
 - make sure you already have xampp or wamp installed if you are on windows machine, mamp for mac , and lamp for linux.
 
 - clone this repository to your local machine or just download the zip.
