@@ -7,24 +7,24 @@
   <section class="jumbotron text-center">
     <div class="container">
       <h1>{{ $phone->brand }} <b>{{ $phone->model }}</b></h1>
+      <p>User: {{ $phone->user->name}}</p>
       <p>
 
         <a href="/"><button type="button" name="button" class="btn btn-success m-2">Go back</button></a>
 
-        @if(Auth::check())
+          @if (Auth::id() == $phone->user_id && Auth::check())
 
-          <a
-            href="{{ route('photo-create', $phone->id) }}"
-            class="btn btn-primary m-2">Upload New Photo
-          </a>
+            <a
+              href="{{ route('photo-create', $phone->id) }}"
+              class="btn btn-primary m-2">Upload New Photo
+            </a>
+            <a
+              href="/phones/{{ $phone->id }}/edit"
+                type="button"
+                class="btn btn-primary m-2">Edit
+            </a>
 
-          <a
-            href="/phones/{{ $phone->id }}/edit"
-              type="button"
-              class="btn btn-primary m-2">Edit
-          </a>
-
-        @endif
+          @endif
       </p>
     </div>
   </section>
@@ -54,7 +54,7 @@
       <p class="float-left mx-2">Color:</p>
       <p><b class="border border-danger rounded-lg p-1">{{ $phone->color}}</b></p>
 
-      @if(Auth::check())
+      @if(Auth::id() == $phone->user_id && Auth::check())
         <form class="pl-2" action="/phones/{{ $phone->id }}" method="post">
           @csrf
           @method('DELETE')
