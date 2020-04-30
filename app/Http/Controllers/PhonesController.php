@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Phone;
+use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class PhonesController extends Controller
 {
@@ -140,6 +142,10 @@ class PhonesController extends Controller
     public function edit($id)
     {
         $phone = Phone::find($id);
+        // abort_if ($user->isNot(current_user()), 403);
+        $this->authorize('edit', $phone->user);
+
+
         return view('phones.edit', compact('phone'));
     }
 
